@@ -1,23 +1,24 @@
-// A complete working Java program to demonstrate all insertion methods
-// on linked list
+// A complete working Java program to demonstrate all insertion and deletion methods on linked list
+
 /**
  * Created by subhajit.sen on 15-05-2017.
  */
-class MyLinkedList
-{
+class LinkedList {
     Node head;  // head of list
 
     /* Linked list Node*/
-    class Node
-    {
+    class Node {
         int data;
         Node next;
-        Node(int d) {data = d; next = null; }
+
+        Node(int d) {
+            data = d;
+            next = null;
+        }
     }
 
     /* Inserts a new Node at front of the list. */
-    public void push(int new_data)
-    {
+    public void push(int new_data) {
         /* 1 & 2: Allocate the Node &
                   Put in the data*/
         Node new_node = new Node(new_data);
@@ -30,11 +31,9 @@ class MyLinkedList
     }
 
     /* Inserts a new node after the given prev_node. */
-    public void insertAfter(Node prev_node, int new_data)
-    {
+    public void insertAfter(Node prev_node, int new_data) {
         /* 1. Check if the given Node is null */
-        if (prev_node == null)
-        {
+        if (prev_node == null) {
             System.out.println("The given previous node cannot be null");
             return;
         }
@@ -51,9 +50,8 @@ class MyLinkedList
     }
 
     /* Appends a new node at the end.  This method is 
-       defined inside MyLinkedList class shown above */
-    public void append(int new_data)
-    {
+       defined inside LinkedList class shown above */
+    public void append(int new_data) {
         /* 1. Allocate the Node &
            2. Put in the data
            3. Set next as null */
@@ -61,8 +59,7 @@ class MyLinkedList
  
         /* 4. If the Linked List is empty, then make the
               new node as head */
-        if (head == null)
-        {
+        if (head == null) {
             head = new Node(new_data);
             return;
         }
@@ -81,46 +78,127 @@ class MyLinkedList
         return;
     }
 
-    /* This function prints contents of linked list starting from
-        the given node */
-    public void printList()
-    {
-        Node tnode = head;
-        while (tnode != null)
-        {
-            System.out.print(tnode.data+" ");
-            tnode = tnode.next;
+    /* Takes index as argument and return data at index*/
+    public int getIndexElement(int index) {
+        Node current = head;
+        int count = 0; /* index of Node we are
+                          currently looking at */
+        while (current != null) {
+            if (count == index)
+                return current.data;
+            count++;
+            current = current.next;
         }
+        /* if we get to this line, the caller was asking
+        for a non-existent element so we assert fail */
+        assert (false);
+        return 0;
     }
 
-    /* Driver program to test above functions. Ideally this function
-       should be in a separate user class.  It is kept here to keep
-       code compact */
-    public static void main(String[] args)
-    {
+    /* This function prints contents of linked list starting from
+      the given node */
+    public void printList() {
+        Node tnode = head;
+        while (tnode != null) {
+            System.out.print(tnode.data + "->");
+            tnode = tnode.next;
+        }
+        System.out.print("Null");
+    }
+
+    public void insertAtIndex(int index, int element) {
+        Node new_data = new Node(element);
+        Node temp;
+        Node current = head;
+        int count = 0; /* index of Node we are
+                          currently looking at */
+        while (current != null) {
+            if (count == index) {
+                temp = current;
+                new_data.data = current.data;
+                new_data.next = current.next;
+                current.data = element;
+                current.next = new_data;
+                System.out.print(element);
+                System.out.print(" at " + index + " index: ");
+                return;
+            }
+
+            count++;
+            current = current.next;
+        }
+
+    }
+
+    public void deleteNode(Node del_node) {
+        // assign the next node of the node to be deleted to temp
+        Node temp = del_node.next;
+        // copy the data from next node
+        del_node.data = temp.data;
+        System.out.print(del_node.data);
+        // copy the next node reference of next node
+        del_node.next = temp.next;
+        temp = null;
+    }
+
+    public static void main(String[] args) {
         /* Start with the empty list */
-        MyLinkedList llist = new MyLinkedList();
+        LinkedList llist = new LinkedList();
 
-        // Insert 6.  So linked list becomes 6->NUllist
         llist.append(6);
-
-        // Insert 7 at the beginning. So linked list becomes
-        // 7->6->NUllist
-        llist.push(7);
-
-        // Insert 1 at the beginning. So linked list becomes
-        // 1->7->6->NUllist
-        llist.push(1);
-
-        // Insert 4 at the end. So linked list becomes
-        // 1->7->6->4->NUllist
-        llist.append(4);
-
-        // Insert 8, after 7. So linked list becomes
-        // 1->7->8->6->4->NUllist
-        llist.insertAfter(llist.head.next, 8);
-
-        System.out.println("\nCreated Linked list is: ");
+        System.out.println("Append 6");
         llist.printList();
+
+        System.out.println("\n--------------");
+
+        llist.push(7);
+        System.out.println("Push 7");
+        llist.printList();
+
+        System.out.println("\n--------------");
+
+        llist.push(1);
+        System.out.println("Push 1");
+        llist.printList();
+
+        System.out.println("\n--------------");
+
+        llist.append(4);
+        System.out.println("Append 4");
+        llist.printList();
+
+        System.out.println("\n--------------");
+
+        llist.insertAfter(llist.head, 8);
+        System.out.println("Insert 8 after head");
+        llist.printList();
+
+        System.out.println("\n--------------");
+
+        System.out.println("Created Linked list is: ");
+        llist.printList();
+
+        System.out.println("\n--------------");
+
+        System.out.print("Deleted 3rd element ");
+        llist.deleteNode(llist.head.next.next);
+        System.out.println(" @head.next.next :");
+        llist.printList();
+
+        System.out.println("\n--------------");
+
+        System.out.println("New Linked list after deletion: ");
+        llist.printList();
+
+        System.out.println("\n--------------");
+
+        System.out.print("New Linked list after adding ");
+        llist.insertAtIndex(0, 3);
+        System.out.println();
+        llist.printList();
+
+        System.out.println("\n--------------");
+
+        System.out.println("Element at index 2 : " + llist.getIndexElement(2));
     }
 }
