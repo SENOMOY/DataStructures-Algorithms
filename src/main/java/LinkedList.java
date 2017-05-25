@@ -75,6 +75,7 @@ class LinkedList {
  
         /* 6. Change the next of last node */
         last.next = new_node;
+        System.out.print(new_data);
         return;
     }
 
@@ -98,23 +99,34 @@ class LinkedList {
     /* This function prints contents of linked list starting from
       the given node */
     public void printList() {
+        System.out.println("List length: " + this.getListLength());
         Node tnode = head;
         while (tnode != null) {
-            System.out.print(tnode.data + "->");
+            System.out.print(tnode.data + " -> ");
             tnode = tnode.next;
         }
         System.out.print("Null");
     }
 
+    public int getListLength() {
+        Node current = head;
+        int count = 1;
+
+        while (current.next != null) {
+            current = current.next;
+            count++;
+        }
+        return count;
+    }
+
     public void insertAtIndex(int index, int element) {
         Node new_data = new Node(element);
-        Node temp;
         Node current = head;
+
         int count = 0; /* index of Node we are
                           currently looking at */
         while (current != null) {
             if (count == index) {
-                temp = current;
                 new_data.data = current.data;
                 new_data.next = current.next;
                 current.data = element;
@@ -123,19 +135,75 @@ class LinkedList {
                 System.out.print(" at " + index + " index: ");
                 return;
             }
-
             count++;
             current = current.next;
         }
 
     }
 
-    public void deleteNode(Node del_node) {
+    public int getMiddle() {
+        Node slow = head;
+        Node fast = head;
+        while (fast != null && fast.next != null) {
+            fast = fast.next.next;
+            slow = slow.next;
+        }
+        return slow.data;
+    }
+
+    public int getNthElementFromLast(int n) {
+        Node slow = head;
+        Node nTh = head;
+        int length = this.getListLength();
+        if (n > length) {
+            System.out.print("index is beyond than the list size");
+            return -1;
+        }
+
+        for (int i = 0; i < n; i++) {
+            nTh = nTh.next;
+        }
+        while (nTh != null) {
+            nTh = nTh.next;
+            slow = slow.next;
+        }
+        System.out.print(n + " index ");
+        return slow.data;
+    }
+
+    public void deleteWholeList() {
+        head = null;
+    }
+
+    public void deleteAtIndex(int index) {
+        Node current = head;
+        int count = 1;
+        System.out.println(index);
+
+        if(index == 0) {
+            head = current.next;
+            return;
+        }
+
+        while (current != null) {
+            Node temp = current;
+            current = current.next;
+            if (count == index) {
+                temp.next = temp.next.next;
+                return;
+            }
+            count++;
+        }
+        System.out.println("Index is out of bound");
+        return;
+    }
+
+    public void deleteAtNode(Node del_node) {
         // assign the next node of the node to be deleted to temp
+        System.out.print(del_node.data);
         Node temp = del_node.next;
         // copy the data from next node
         del_node.data = temp.data;
-        System.out.print(del_node.data);
         // copy the next node reference of next node
         del_node.next = temp.next;
         temp = null;
@@ -146,7 +214,7 @@ class LinkedList {
         LinkedList llist = new LinkedList();
 
         llist.append(6);
-        System.out.println("Append 6");
+        System.out.println("Append ");
         llist.printList();
 
         System.out.println("\n--------------");
@@ -169,6 +237,12 @@ class LinkedList {
 
         System.out.println("\n--------------");
 
+        llist.push(9);
+        System.out.println("Push 9");
+        llist.printList();
+
+        System.out.println("\n--------------");
+
         llist.insertAfter(llist.head, 8);
         System.out.println("Insert 8 after head");
         llist.printList();
@@ -181,13 +255,8 @@ class LinkedList {
         System.out.println("\n--------------");
 
         System.out.print("Deleted 3rd element ");
-        llist.deleteNode(llist.head.next.next);
+        llist.deleteAtNode(llist.head.next.next);
         System.out.println(" @head.next.next :");
-        llist.printList();
-
-        System.out.println("\n--------------");
-
-        System.out.println("New Linked list after deletion: ");
         llist.printList();
 
         System.out.println("\n--------------");
@@ -200,5 +269,23 @@ class LinkedList {
         System.out.println("\n--------------");
 
         System.out.println("Element at index 2 : " + llist.getIndexElement(2));
+        llist.printList();
+
+        System.out.println("\n--------------");
+
+        System.out.println("Middle element is: " + llist.getMiddle());
+        llist.printList();
+
+        System.out.println("\n--------------");
+
+        System.out.println("Element from last is: " + llist.getNthElementFromLast(3));
+        llist.printList();
+
+        System.out.println("\n--------------");
+
+        System.out.print("Delete element at index ");
+        llist.deleteAtIndex(4);
+        llist.printList();
+
     }
 }
