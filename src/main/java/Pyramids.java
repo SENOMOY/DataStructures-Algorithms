@@ -30,8 +30,8 @@ public class Pyramids {
     public void printPyramidHalfLeft(int num) {
         int temp = num;
         for (int i = 1; i <= num; i++) {
-            temp = temp -1;
-            for (int a = 1; a <= temp ; a++) {
+            temp = temp - 1;
+            for (int a = 1; a <= temp; a++) {
                 System.out.print(" ");
             }
             for (int b = 1; b <= i; b++) {
@@ -40,18 +40,18 @@ public class Pyramids {
             System.out.println();
         }
     }
+
     public void printPyramidFull(int num) {
-        for (int i=0; i<num; i++)
-        {
-            for (int k=0; k<num-i; k++)
-            {
+        for (int i = 0; i < num; i++) {
+            for (int k = 0; k < num - i; k++) {
                 System.out.print(" ");
             }
-            for (int j=0; j<i*2+1; j++)
-            {
+            for (int j = 0; j < i * 2 + 1; j++) {
                 System.out.print("*");
             }
             System.out.println();
         }
     }
+
+
 }

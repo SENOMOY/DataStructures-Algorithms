@@ -22,7 +22,7 @@ class LinkedList {
         /* 1 & 2: Allocate the Node &
                   Put in the data*/
         Node new_node = new Node(new_data);
- 
+        System.out.print(new_data);
         /* 3. Make next of new Node as head */
         new_node.next = head;
  
@@ -37,7 +37,7 @@ class LinkedList {
             System.out.println("The given previous node cannot be null");
             return;
         }
- 
+        System.out.print(new_data + " after head");
         /* 2 & 3: Allocate the Node &
                   Put in the data*/
         Node new_node = new Node(new_data);
@@ -56,7 +56,7 @@ class LinkedList {
            2. Put in the data
            3. Set next as null */
         Node new_node = new Node(new_data);
- 
+        System.out.print(new_data);
         /* 4. If the Linked List is empty, then make the
               new node as head */
         if (head == null) {
@@ -81,6 +81,7 @@ class LinkedList {
 
     /* Takes index as argument and return data at index*/
     public int getIndexElement(int index) {
+        System.out.print(index);
         Node current = head;
         int count = 0; /* index of Node we are
                           currently looking at */
@@ -101,6 +102,7 @@ class LinkedList {
     public void printList() {
         System.out.println("List length: " + this.getListLength());
         Node tnode = head;
+        System.out.print("List: ");
         while (tnode != null) {
             System.out.print(tnode.data + " -> ");
             tnode = tnode.next;
@@ -111,6 +113,10 @@ class LinkedList {
     public int getListLength() {
         Node current = head;
         int count = 1;
+
+        if (head == null) {
+            return 0;
+        }
 
         while (current.next != null) {
             current = current.next;
@@ -131,8 +137,7 @@ class LinkedList {
                 new_data.next = current.next;
                 current.data = element;
                 current.next = new_data;
-                System.out.print(element);
-                System.out.print(" at " + index + " index: ");
+                System.out.print(element + " at " + index + " index: ");
                 return;
             }
             count++;
@@ -173,6 +178,7 @@ class LinkedList {
 
     public void deleteWholeList() {
         head = null;
+        System.gc();
     }
 
     public void deleteAtIndex(int index) {
@@ -180,7 +186,7 @@ class LinkedList {
         int count = 1;
         System.out.println(index);
 
-        if(index == 0) {
+        if (index == 0) {
             head = current.next;
             return;
         }
@@ -198,6 +204,39 @@ class LinkedList {
         return;
     }
 
+    public void reverse() {
+        Node current = head;
+        Node before = null;
+        Node next;
+        while (current != null) {
+            next = current.next;
+            current.next = before;
+            before = current;
+            current = next;
+        }
+        head = before;
+    }
+
+    public boolean isPalindromeUtil(String st) {
+        int length = st.length();
+
+        for (int i = 0; i < length; i++)
+            if (st.charAt(i) != st.charAt(length - i - 1))
+                return false;
+
+        return true;
+    }
+
+    public boolean isPalindrome() {
+        Node current = head;
+        String st = "";
+        while (current != null) {
+            st=st.concat(String.valueOf(current.data));
+            current = current.next;
+        }
+        return isPalindromeUtil(st);
+    }
+
     public void deleteAtNode(Node del_node) {
         // assign the next node of the node to be deleted to temp
         System.out.print(del_node.data);
@@ -212,6 +251,7 @@ class LinkedList {
     public static void main(String[] args) {
         /* Start with the empty list */
         LinkedList llist = new LinkedList();
+        LinkedList palindrome = new LinkedList();
 
         llist.append(6);
         System.out.println("Append ");
@@ -220,31 +260,31 @@ class LinkedList {
         System.out.println("\n--------------");
 
         llist.push(7);
-        System.out.println("Push 7");
+        System.out.println("Push");
         llist.printList();
 
         System.out.println("\n--------------");
 
         llist.push(1);
-        System.out.println("Push 1");
+        System.out.println("Push ");
         llist.printList();
 
         System.out.println("\n--------------");
 
         llist.append(4);
-        System.out.println("Append 4");
+        System.out.println("Append ");
         llist.printList();
 
         System.out.println("\n--------------");
 
         llist.push(9);
-        System.out.println("Push 9");
+        System.out.println("Push ");
         llist.printList();
 
         System.out.println("\n--------------");
 
         llist.insertAfter(llist.head, 8);
-        System.out.println("Insert 8 after head");
+        System.out.println("Insert ");
         llist.printList();
 
         System.out.println("\n--------------");
@@ -254,9 +294,8 @@ class LinkedList {
 
         System.out.println("\n--------------");
 
-        System.out.print("Deleted 3rd element ");
+        System.out.print("Deleted element from @head.next.next : ");
         llist.deleteAtNode(llist.head.next.next);
-        System.out.println(" @head.next.next :");
         llist.printList();
 
         System.out.println("\n--------------");
@@ -268,7 +307,7 @@ class LinkedList {
 
         System.out.println("\n--------------");
 
-        System.out.println("Element at index 2 : " + llist.getIndexElement(2));
+        System.out.println("Element at index " + llist.getIndexElement(2));
         llist.printList();
 
         System.out.println("\n--------------");
@@ -286,6 +325,29 @@ class LinkedList {
         System.out.print("Delete element at index ");
         llist.deleteAtIndex(4);
         llist.printList();
+
+        System.out.println("\n--------------");
+
+        System.out.println("Reverse the list");
+        llist.reverse();
+        llist.printList();
+
+        System.out.println("\n--------------");
+
+        System.out.println("Delete whole list");
+        llist.deleteWholeList();
+        llist.printList();
+
+        System.out.println("\n--------------");
+
+        palindrome.append(1);
+        palindrome.append(8);
+        palindrome.append(3);
+        palindrome.append(8);
+        palindrome.append(1);
+
+        palindrome.printList();
+        System.out.print(" is Palindrome? "+palindrome.isPalindrome());
 
     }
 }
